@@ -1,38 +1,32 @@
 require 'rails_helper'
 
-describe Todo, '#completed?' do
-  it 'returns true if completed_at is set' do
-    todo = Todo.new(completed_at: Time.current)
-
-    expect(todo).to be_completed
-  end
-
-  it 'teturns false if completed_at is nil' do
-    todo = Todo.new(completed_at: nil)
-
-    expect(todo).not_to be_completed
-  end
-end
-
 describe Character do
   it 'has a valid factory' do
-    expect(FactoryBot.build(:character).save).to be_true
+    expect(FactoryBot.build(:character).save).to be_truthy
+  end
+
+  it 'is valid without a last name' do
+    expect(FactoryBot.build(:character, last_name: nil).save).to be_truthy
   end
 
   it 'is invalid without a first name' do
-    expect(FactoryBot.build(:character, first_name: nil).save).to be_true
+    expect(FactoryBot.build(:character, first_name: nil).save).to be_falsey
   end
 
-  it 'is invalid without a last name' do
-    expect(FactoryBot.build(:character, last_name: nil).save).to be_true
+  it 'is invalid with a blank first_name' do
+    expect(FactoryBot.build(:character, first_name: '').save).to be_falsey
+  end
+
+  it 'is invalid with a blank last_name' do
+    expect(FactoryBot.build(:character, last_name: '').save).to be_falsey
   end
 
   it 'is invalid without a show' do
-    expect(FactoryBot.build(:character, show: nil).save).to be_false
+    expect(FactoryBot.build(:character, show: nil).save).to be_falsey
   end
 
   it 'is invalid without an actor' do
-    expect(FactoryBot.build(:character, actor: nil).save).to be_false
+    expect(FactoryBot.build(:character, actor: nil).save).to be_falsey
   end
 
   describe '#full_name' do

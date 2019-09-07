@@ -2,46 +2,44 @@ require 'rails_helper'
 
 describe Character do
   it 'has a valid factory' do
-    expect(FactoryBot.build(:character).save).to be_truthy
+    expect(build(:character).save).to be_truthy
   end
 
-  it 'is valid without a last name' do
-    expect(FactoryBot.build(:character, last_name: nil).save).to be_truthy
+  it 'can be without a last name' do
+    expect(build(:character, last_name: nil).save).to be_truthy
   end
 
-  it 'is invalid without a first name' do
-    expect(FactoryBot.build(:character, first_name: nil).save).to be_falsey
+  it 'fails without a first name' do
+    expect(build(:character, first_name: nil).save).to be_falsey
   end
 
-  it 'is invalid with a blank first_name' do
-    expect(FactoryBot.build(:character, first_name: '').save).to be_falsey
+  it 'fails with a blank first_name' do
+    expect(build(:character, first_name: "\t").save).to be_falsey
   end
 
-  it 'is invalid with a blank last_name' do
-    expect(FactoryBot.build(:character, last_name: '').save).to be_falsey
+  it 'fails with a blank last_name' do
+    expect(build(:character, last_name: "\n").save).to be_falsey
   end
 
-  it 'is invalid without a show' do
-    expect(FactoryBot.build(:character, show: nil).save).to be_falsey
+  it 'fails without a show' do
+    expect(build(:character, show: nil).save).to be_falsey
   end
 
-  it 'is invalid without an actor' do
-    expect(FactoryBot.build(:character, actor: nil).save).to be_falsey
+  it 'fails without an actor' do
+    expect(build(:character, actor: nil).save).to be_falsey
   end
 
   describe '#full_name' do
     it 'returns the full name of the character' do
-      character = FactoryBot.build :character
-      character.save
+      character = create :character
 
       expect(character.full_name).to eq(
         "#{character.first_name} #{character.last_name}"
       )
     end
 
-    it 'returns the first name of the character when last name is missing' do
-      character = FactoryBot.build :character, last_name: nil
-      character.save
+    it 'returns the first name when the last name is missing' do
+      character = create :character, last_name: nil
 
       expect(character.full_name).to eq character.first_name
     end
